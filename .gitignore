@@ -1,0 +1,10 @@
+/.idea
+/*.iml
+/build
+/target
+/distrib
+/logs
+/docker-compose.yml
+/package-lock.json
+/node_modules
+/src/main/resources/application.yml

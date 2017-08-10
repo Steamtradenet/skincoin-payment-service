@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+
+    <!-- Watchers -->
+    <bean id="watchAccountCreatorService" class="net.steamtrade.payment.backend.ethereum.watch.AccountCreatorService">
+    </bean>
+
+    <bean id="watchNotificationService" class="net.steamtrade.payment.backend.ethereum.watch.WatchNotificationService">
+    </bean>
+
+    <bean id="watchNewTransactionService" class="net.steamtrade.payment.backend.ethereum.watch.WatchNewTransactionService">
+    </bean>
+
+    <bean id="watchPendingTransactionService" class="net.steamtrade.payment.backend.ethereum.watch.WatchPendingTransactionService">
+        <constructor-arg name="taskExecutor" ref="pendingTransactionExecutor"/>
+    </bean>
+
+    <bean id="pendingTransactionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="1"/>
+        <property name="maxPoolSize" value="5"/>
+    </bean>
+
+    <!-- Schedulers -->
+    <task:scheduled-tasks scheduler="tradeScheduler">
+        <task:scheduled ref="watchAccountCreatorService" method="poll"
+                        fixed-delay="${ethereumService.watch.accountCreator.poll.period}" />
+        <task:scheduled ref="watchNewTransactionService" method="poll"
+                        fixed-delay="${ethereumService.watch.newTransaction.poll.period}" />
+        <task:scheduled ref="watchPendingTransactionService" method="poll"
+                        fixed-delay="${ethereumService.watch.pendingTransaction.poll.period}" />
+        <task:scheduled ref="watchNotificationService" method="poll"
+                        fixed-delay="${ethereumService.watch.notification.poll.period}" />
+    </task:scheduled-tasks>
+
+    <task:scheduler id="tradeScheduler" pool-size="50"/>
+
+</beans>
