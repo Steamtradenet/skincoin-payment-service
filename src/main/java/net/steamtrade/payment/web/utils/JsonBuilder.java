@@ -32,6 +32,8 @@ public class JsonBuilder {
         json.setCreatingTime(payment.getCreatingTime().getTime());
         json.setStatus(payment.getStatusName());
         json.setType(payment.getTypeName());
+        json.setFrom(payment.getFrom());
+        json.setTo(payment.getTo());
         json.setAmount(payment.getAmount());
         json.setCurrency(payment.getCurrency().getName());
         json.setError(payment.getError());
