@@ -1,6 +1,7 @@
 package net.steamtrade.payment.backend.ethereum.watch.logic;
 
 import net.steamtrade.payment.backend.client.LogServiceClient;
+import net.steamtrade.payment.backend.config.AppConfig;
 import net.steamtrade.payment.backend.ethereum.dao.EthTransactionDao;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthTransaction;
 import net.steamtrade.payment.backend.utils.DateUtils;
@@ -28,11 +29,13 @@ public class TransactionProcessor {
     private LogServiceClient log;
     @Autowired
     private PaymentProcessor paymentProcessor;
+    @Autowired
+    private AppConfig appConfig;
 
     public void process(List<EthTransaction> transactions) {
         try {
             BigInteger blockNumber = web3j.ethBlockNumber().send().getBlockNumber();
-//            debug("Current block number:"+blockNumber);
+            debug("Current block number:"+blockNumber);
 
             for (EthTransaction transaction: transactions) {
                 try {
@@ -72,14 +75,15 @@ public class TransactionProcessor {
 
                     if (transaction.getBlockNumber() != null) {
                         BigInteger confirmations = blockNumber.subtract(transaction.getBlockNumber());
-                        if (confirmations.compareTo(BigInteger.TEN) >= 0) {
+                        if (confirmations.compareTo(appConfig.getConfirmationCount()) >= 0) {
                             log.info(this.getClass(), "Transaction(hash:"+transaction.getHash()+") was accepted.");
 
                             transaction.setStatus(EthTransaction.Status.ACCEPTED);
                             paymentProcessor.processPayment(transaction);
                         } else {
                             int delay = calculateConfirmationDelay(confirmations);
-                            log.info(this.getClass(), "Transaction(hash:"+transaction.getHash()+") was delayed on "+delay+" sec. Confirmations: " + confirmations + " from 10");
+                            log.info(this.getClass(), "Transaction(hash:" + transaction.getHash() + ") was delayed on " + delay + " sec. Confirmations: " + confirmations + " from " + appConfig.getConfirmationCount());
+
                             transaction.setHoldTime(DateUtils.addSeconds(new Date(), delay));
                         }
                     }
@@ -107,10 +111,12 @@ public class TransactionProcessor {
     }
 
     private int calculateConfirmationDelay(BigInteger confirmations) {
-        if (confirmations.compareTo(BigInteger.valueOf(5)) <= 0) {
+        int confirmationCount = appConfig.getConfirmationCount().intValue();
+
+        if (confirmations.compareTo(BigInteger.valueOf(confirmationCount / 3)) <= 0) {
+            return 90;
+        } else if (confirmations.compareTo(BigInteger.valueOf(confirmationCount / 2)) <= 0) {
             return 60;
-        } else if (confirmations.compareTo(BigInteger.valueOf(8)) <= 0) {
-            return 30;
         } else {
             return 10;
         }

@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+import java.math.BigInteger;
+
 /**
  * Created by sasha on 29.06.17.
  */
@@ -30,12 +32,26 @@ public class AppConfig {
     /**
      *  Ethereum service
      */
+    @Value("${ethereumService.disabled:false}")
+    private boolean disabled;
+
+    @Value("${ethereumService.enabledDebug:true}")
+    private boolean enabledDebug;
+
+    @Value("${ethereumService.gasLimit:90000}") // 90000 - Default value from mist and geth
+    private int gasLimit;
+
+    @Value("${ethereumService.gasPriceLimit:46000000000}") // 46 gwei
+    private BigInteger gasPriceLimit;
+
+    @Value("${ethereumService.confirmationCount: 30}")
+    private BigInteger confirmationCount;
+
     @Value("${ethereumService.accountCreator.pool.size}")
     private int accountPoolSize;
 
-    @Value("${ethereumService.enabledDebug}")
-    private boolean enabledDebug;
-
+    @Value("${ethereumService.skincoin.deployed-address}")
+    private String skincoinAddress;
 
     /**
      * JWT

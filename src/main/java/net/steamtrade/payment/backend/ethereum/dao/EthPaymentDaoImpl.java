@@ -1,5 +1,6 @@
 package net.steamtrade.payment.backend.ethereum.dao;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthPayment;
 import net.steamtrade.payment.backend.ethereum.dao.model.QEthPayment;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * Created by sasha on 29.06.17.
@@ -45,5 +47,16 @@ public class EthPaymentDaoImpl implements EthPaymentDao {
             query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
         }
         return query.fetchOne();
+    }
+
+    @Override
+    public List<EthPayment> getPayoutsToCheck(long limit) {
+        QEthPayment payment = QEthPayment.ethPayment;
+
+        BooleanBuilder where = new BooleanBuilder();
+        where.and(payment.id.type.eq(EthPayment.Type.PAYOUT))
+                .and(payment.status.eq(EthPayment.Status.CHECK_PAYOUT));
+
+        return new JPAQuery<EthPayment>(em).from(payment).where(where).limit(limit).fetch();
     }
 }

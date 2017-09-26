@@ -1,6 +1,5 @@
 package net.steamtrade.payment.backend.ethereum.watch.logic;
 
-import net.steamtrade.payment.backend.Currency;
 import net.steamtrade.payment.backend.client.LogServiceClient;
 import net.steamtrade.payment.backend.ethereum.dao.EthAccountDao;
 import net.steamtrade.payment.backend.ethereum.dao.EthPaymentDao;
@@ -8,7 +7,6 @@ import net.steamtrade.payment.backend.ethereum.dao.model.EthAccount;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthPayment;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthTransaction;
 import net.steamtrade.payment.backend.ethereum.dao.model.pk.EthPaymentPK;
-import net.steamtrade.payment.backend.ethereum.service.EthService;
 import net.steamtrade.payment.backend.ethereum.utils.NotifyHelper;
 import net.steamtrade.payment.backend.exceptions.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import net.steamtrade.payment.backend.exceptions.Error;
 
-import java.math.BigInteger;
 import java.util.UUID;
-
-import static net.steamtrade.payment.backend.ethereum.dao.model.EthPayment.Type.*;
 
 /**
  * Created by sasha on 03.07.17.
@@ -30,8 +25,6 @@ import static net.steamtrade.payment.backend.ethereum.dao.model.EthPayment.Type.
 @Service
 public class PaymentProcessor {
 
-    @Autowired
-    private EthService ethService;
     @Autowired
     private LogServiceClient log;
     @Autowired
@@ -65,15 +58,16 @@ public class PaymentProcessor {
                 payment.setAmount(transaction.getAmount());
                 payment.setCurrency(transaction.getCurrency());
             }
-            payment.setStatus(getPaymentStatus(transaction.getStatus()));
+            payment.setStatus(getPaymentStatus(transaction.getStatus(), payment.getId().getType()));
             payment.setStackTrace(transaction.getStackTrace());
             payment.setError(transaction.getError());
             paymentDao.save(payment);
 
             txManager.commit(status);
 
-         notifyHelper.notifyStatusChanged(payment);
-
+            if (!payment.getStatus().equals(EthPayment.Status.CHECK_PAYOUT)) {
+                notifyHelper.notifyStatusChanged(payment);
+            }
         } catch (AppException ex) {
             ex.printStackTrace();
             txManager.rollback(status);
@@ -92,13 +86,17 @@ public class PaymentProcessor {
     }
 
 
-    private int getPaymentStatus(int transactionStatus) {
+    private int getPaymentStatus(int transactionStatus, int paymentType) {
         switch (transactionStatus) {
             case EthTransaction.Status.CREATED:
             case EthTransaction.Status.PENDING:
                 return EthPayment.Status.CREATED;
             case EthTransaction.Status.ACCEPTED:
-                return EthPayment.Status.ACCEPTED;
+                if (paymentType == EthPayment.Type.PAYOUT) {
+                    return EthPayment.Status.CHECK_PAYOUT;
+                } else {
+                    return EthPayment.Status.ACCEPTED;
+                }
             case EthTransaction.Status.ERROR:
                 return EthPayment.Status.ERROR;
             default:

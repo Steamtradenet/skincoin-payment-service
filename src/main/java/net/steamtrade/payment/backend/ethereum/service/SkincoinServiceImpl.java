@@ -2,8 +2,8 @@ package net.steamtrade.payment.backend.ethereum.service;
 
 import com.hazelcast.core.HazelcastInstance;
 import net.steamtrade.payment.backend.Currency;
-import net.steamtrade.payment.backend.ethereum.config.EthereumConfig;
 import net.steamtrade.payment.backend.admin.dao.AppDao;
+import net.steamtrade.payment.backend.config.AppConfig;
 import net.steamtrade.payment.backend.ethereum.dao.EthPaymentDao;
 import net.steamtrade.payment.backend.admin.dao.model.App;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthPayment;
@@ -28,7 +28,7 @@ public class SkincoinServiceImpl implements SkincoinService {
     private static final String CREATE_TRANSACTION_LOCK_PREFIX = "SkincoinServiceImpl.createTxn_";
 
     @Autowired
-    private EthereumConfig ethereumConfig;
+    private AppConfig appConfig;
     @Autowired
     private EthPaymentDao paymentDao;
     @Autowired
@@ -50,8 +50,8 @@ public class SkincoinServiceImpl implements SkincoinService {
 
         if (gasPrice == null) {
             gasPrice = ethService.getGasPrice(); // Calculate current gasPrice in Ethereum
-            if (gasPrice.compareTo(ethereumConfig.getGasPriceLimit()) == 1) {
-                throw new AppException(Error.GAS_PRICE_OVERLIMIT, "Estimated gas price("+gasPrice+") is too expensive. Limit is " + ethereumConfig.getGasPriceLimit());
+            if (gasPrice.compareTo(appConfig.getGasPriceLimit()) == 1) {
+                throw new AppException(Error.GAS_PRICE_OVERLIMIT, "Estimated gas price("+gasPrice+") is too expensive. Limit is " + appConfig.getGasPriceLimit());
             }
         }
 

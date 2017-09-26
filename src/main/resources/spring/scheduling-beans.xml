@@ -14,6 +14,13 @@
     <bean id="watchNotificationService" class="net.steamtrade.payment.backend.ethereum.watch.WatchNotificationService">
     </bean>
 
+    <bean id="watchInternalPayoutsService" class="net.steamtrade.payment.backend.ethereum.watch.WatchInternalPayoutsService">
+    </bean>
+
+    <bean id="newTransactionAnalyser" class="net.steamtrade.payment.backend.ethereum.watch.NewTransactionAnalyser">
+        <constructor-arg name="taskExecutor" ref="newTransactionAnalyserExecutor"/>
+    </bean>
+
     <bean id="watchNewTransactionService" class="net.steamtrade.payment.backend.ethereum.watch.WatchNewTransactionService">
     </bean>
 
@@ -22,6 +29,11 @@
     </bean>
 
     <bean id="pendingTransactionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="1"/>
+        <property name="maxPoolSize" value="5"/>
+    </bean>
+
+    <bean id="newTransactionAnalyserExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="1"/>
         <property name="maxPoolSize" value="5"/>
     </bean>
@@ -36,6 +48,10 @@
                         fixed-delay="${ethereumService.watch.pendingTransaction.poll.period}" />
         <task:scheduled ref="watchNotificationService" method="poll"
                         fixed-delay="${ethereumService.watch.notification.poll.period}" />
+        <task:scheduled ref="newTransactionAnalyser" method="poll"
+                        fixed-delay="${ethereumService.watch.newTransactionAnalyser.poll.period}" />
+        <task:scheduled ref="watchInternalPayoutsService" method="poll"
+                        fixed-delay="${ethereumService.watch.internalPayouts.poll.period}" />
     </task:scheduled-tasks>
 
     <task:scheduler id="tradeScheduler" pool-size="50"/>

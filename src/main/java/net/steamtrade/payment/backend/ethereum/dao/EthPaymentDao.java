@@ -6,6 +6,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 
+import java.util.List;
+
 /**
  * Created by sasha on 29.06.17.
  */
@@ -21,4 +23,6 @@ public interface EthPaymentDao {
     EthPayment getPayment(int appId, int type, String requestId);
 
     EthPayment getPayment(String hash, boolean forUpdate);
+
+    List<EthPayment> getPayoutsToCheck(long limit);
 }

@@ -27,6 +27,11 @@ public class LogServiceClient {
         logger.warn(message);
     }
 
+    public void warn(Class<?> clazz, String message, Throwable t) {
+        Logger logger = LoggerFactory.getLogger(clazz);
+        logger.warn(message, t);
+    }
+
     public void error(Class<?> clazz, String message, Throwable t) {
         Logger logger = LoggerFactory.getLogger(clazz);
         logger.error(message, t);

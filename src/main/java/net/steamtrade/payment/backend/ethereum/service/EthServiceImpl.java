@@ -2,7 +2,6 @@ package net.steamtrade.payment.backend.ethereum.service;
 
 import net.steamtrade.payment.backend.Currency;
 import net.steamtrade.payment.backend.config.AppConfig;
-import net.steamtrade.payment.backend.ethereum.config.EthereumConfig;
 import net.steamtrade.payment.backend.exceptions.AppException;
 import net.steamtrade.payment.json.EthNetworkJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,6 @@ public class EthServiceImpl implements EthService {
 
     @Autowired
     private Web3j web3j;
-    @Autowired
-    private EthereumConfig ethereumConfig;
     @Autowired
     private AppConfig appConfig;
 
@@ -93,7 +90,7 @@ public class EthServiceImpl implements EthService {
     public String createSkinTransaction(String fromAddress, String fromPassword, String toAddress,
                                          BigInteger amount, BigInteger gasLimit, BigInteger gasPrice) throws AppException {
 
-        gasLimit = gasLimit == null ? BigInteger.valueOf(ethereumConfig.getGasLimit()): gasLimit;
+        gasLimit = gasLimit == null ? BigInteger.valueOf(appConfig.getGasLimit()): gasLimit;
 
         Function function = new Function("transfer", Arrays.<Type>asList(new Address(toAddress), new Uint256(amount)),
                 Collections.<TypeReference<?>>emptyList());
@@ -102,7 +99,7 @@ public class EthServiceImpl implements EthService {
         // Prepare transaction
         Transaction transaction = Transaction.
                 createFunctionCallTransaction(fromAddress, null, gasPrice, gasLimit,
-                        ethereumConfig.getSkincoinAddress(), encodedFunction);
+                        appConfig.getSkincoinAddress(), encodedFunction);
 
         // Estimate and check gasLimit
         BigInteger estimatedGasLimit = estimateGasLimit(transaction);
@@ -130,7 +127,7 @@ public class EthServiceImpl implements EthService {
     public String createEtherTransaction(String fromAddress, String fromPassword, String toAddress,
                                           BigInteger amount, BigInteger gasLimit, BigInteger gasPrice) throws AppException {
 
-        gasLimit = gasLimit == null ? BigInteger.valueOf(ethereumConfig.getGasLimit()): gasLimit;
+        gasLimit = gasLimit == null ? BigInteger.valueOf(appConfig.getGasLimit()): gasLimit;
 
         // Prepare transaction
         Transaction transaction = Transaction.
@@ -174,7 +171,7 @@ public class EthServiceImpl implements EthService {
                     Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
             String encodedFunction = FunctionEncoder.encode(function);
             EthCall ethCall = this.web3j.ethCall(Transaction.createEthCallTransaction(
-                    accountId, ethereumConfig.getSkincoinAddress(), encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
+                    accountId, appConfig.getSkincoinAddress(), encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
             List<Type> result = FunctionReturnDecoder.decode(ethCall.getValue(), function.getOutputParameters());
             return !result.isEmpty()? ((Uint256)result.get(0)).getValue(): null;
         } catch (Exception ex) {

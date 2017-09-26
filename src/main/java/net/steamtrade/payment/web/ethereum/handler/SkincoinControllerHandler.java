@@ -1,7 +1,7 @@
 package net.steamtrade.payment.web.ethereum.handler;
 
 import net.steamtrade.payment.backend.Currency;
-import net.steamtrade.payment.backend.ethereum.config.EthereumConfig;
+import net.steamtrade.payment.backend.config.AppConfig;
 import net.steamtrade.payment.backend.admin.dao.model.App;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthPayment;
 import net.steamtrade.payment.backend.ethereum.service.EthService;
@@ -28,7 +28,7 @@ public class SkincoinControllerHandler {
     @Autowired
     private EthService ethService;
     @Autowired
-    private EthereumConfig ethereumConfig;
+    private AppConfig appConfig;
 
     public EthPayment createPayout(NewRequestJson newPaymentJson, Map<String, String[]> filter) throws AppException {
         App app = SecurityContext.getCurrentApp();
@@ -53,7 +53,7 @@ public class SkincoinControllerHandler {
         EthereumInfoJson json = new EthereumInfoJson();
         json.setClientVersion(ethService.getClientVersion());
         json.setNetwork(ethService.getEthNetwork().getName());
-        json.setSkincoinAddress(ethereumConfig.getSkincoinAddress());
+        json.setSkincoinAddress(appConfig.getSkincoinAddress());
         return json;
     }
 }

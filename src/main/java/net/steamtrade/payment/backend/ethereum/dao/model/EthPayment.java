@@ -20,12 +20,10 @@ public class EthPayment implements Serializable {
     private static final long serialVersionUID = -8585352259435548395L;
 
     public interface Status {
-        int NON_CREATED = 0; // For payments
         int CREATED = 1;
         int ACCEPTED = 2;
-        int CANCELED = 3;
+        int CHECK_PAYOUT = 3;
         int ERROR = 4;
-        int TIMEOUT = 5;    // For payments
     }
 
     public interface Type {
@@ -43,8 +41,8 @@ public class EthPayment implements Serializable {
     @Column(name = "creating_time", nullable = false)
     private Date creatingTime = new Date();
 
-    @Column(name = "status")
-    private Integer status = Status.NON_CREATED;
+    @Column(name = "status", nullable = false)
+    private Integer status;
 
     @Column(name = "from_address")
     private String from;
@@ -59,6 +57,9 @@ public class EthPayment implements Serializable {
     @Column(name = "amount")
     private BigInteger amount = BigInteger.ZERO;
 
+    @Column(name = "payment_request_id")
+    private String paymentRequestId;
+
     @Column(name = "error")
     private String error;
 
@@ -67,18 +68,13 @@ public class EthPayment implements Serializable {
 
     public String getStatusName() {
         switch (status) {
-            case Status.NON_CREATED:
-                return "non_created";
+            case Status.CHECK_PAYOUT:
             case Status.CREATED:
                 return "created";
             case Status.ACCEPTED:
                 return "accepted";
-            case Status.CANCELED:
-                return "canceled";
             case Status.ERROR:
                 return "error";
-            case Status.TIMEOUT:
-                return "timeout";
             default:
                 throw new RuntimeException("Unknown transaction status: " + status);
         }
