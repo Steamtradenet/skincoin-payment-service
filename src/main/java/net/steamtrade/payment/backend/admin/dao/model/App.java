@@ -39,6 +39,9 @@ public class App implements Serializable, Principal {
     @org.hibernate.annotations.Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean enableCallback = false;
 
+    @Column(name = "auth_secret")
+    private String authSecret;
+
     @Override
     public String getName() {
         return id.toString();

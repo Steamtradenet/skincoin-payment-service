@@ -48,7 +48,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/app", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Object> getApps(@RequestBody AppJson appJson) throws Exception {
+    public ResponseEntity<Object> createOrUpdateApp(@RequestBody AppJson appJson) throws Exception {
         appJson.validate();
 
         appService.createOrUpdateApp(fromJson(appJson));
@@ -64,6 +64,7 @@ public class AdminController {
         app.setFromPassword(json.getFromPassword());
         app.setCallbackUrl(json.getCallbackUrl());
         app.setEnableCallback(json.getEnableCallback());
+        app.setAuthSecret(json.getAuthSecret());
 
         return app;
     }

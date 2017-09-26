@@ -31,6 +31,12 @@ function apiKeyValidator(value) {
     return true;
 }
 
+function authSecretValidator(value) {
+    if (!value) {
+        return 'Auth secret is required!';
+    }
+    return true;
+}
 
 function nameValidator(value) {
     if (!value) {
@@ -96,6 +102,7 @@ class AppTable extends Component {
                 <TableHeaderColumn width='20%' dataField='from_address' editable={ { type: 'text', validator: addressValidator} }>Payout address</TableHeaderColumn>
                 <TableHeaderColumn width='15%' dataField='from_password' editable={ { type: 'text', validator: passwordValidator} }>Payout password</TableHeaderColumn>
                 <TableHeaderColumn width='20%' dataField='callback_url'>Callback URL</TableHeaderColumn>
+                <TableHeaderColumn width='15%' dataField='auth_secret' editable={ { type: 'text', validator: authSecretValidator} }>Auth secret</TableHeaderColumn>
                 <TableHeaderColumn width='10%' dataField='enable_callback' editable={ { type: 'checkbox', options: { values: 'true:false' } } }>Enable callback</TableHeaderColumn>
             </BootstrapTable>
         );

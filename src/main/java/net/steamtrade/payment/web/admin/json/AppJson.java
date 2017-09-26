@@ -35,6 +35,8 @@ public class AppJson {
     @JsonProperty("enable_callback")
     private Boolean enableCallback;
 
+    @JsonProperty("auth_secret")
+    private String authSecret;
 
     public void validate() throws AppException {
         if (StringUtils.isAnyEmpty(name, token)) {
@@ -42,6 +44,9 @@ public class AppJson {
         }
         if (StringUtils.isAnyEmpty(fromAddress, fromPassword)) {
             throw new AppException(Error.INCORRECT_FORMAT_JSON, "Payout credentials can't be NULL");
+        }
+        if (StringUtils.isEmpty(authSecret)) {
+            throw new AppException(Error.INCORRECT_FORMAT_JSON, "Auth secret can't be NULL");
         }
     }
 

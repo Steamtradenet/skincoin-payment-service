@@ -49,6 +49,7 @@ public class JsonBuilder {
         json.setEnableCallback(app.getEnableCallback());
         json.setFromAddress(app.getFromAddress());
         json.setFromPassword(app.getFromPassword());
+        json.setAuthSecret(app.getAuthSecret());
         return json;
     }
 
