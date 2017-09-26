@@ -12,10 +12,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 /**
  * Created by sasha on 02.08.17.
  */
-@RunWith(SpringRunner.class)
-@ActiveProfiles("default")
-@SpringBootTest(classes = PaymentApplication.class)
-@WebAppConfiguration
+//@RunWith(SpringRunner.class)
+//@ActiveProfiles("default")
+//@SpringBootTest(classes = PaymentApplication.class)
+//@WebAppConfiguration
 public class Application {
 
     @Autowired

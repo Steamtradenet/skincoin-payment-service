@@ -11,7 +11,7 @@ import org.junit.Test;
  */
 public class CacheManagerTest extends Application {
 
-    @Test
+//    @Test
     public void warmUpCacheTest() {
 
         String key = "0xbfdd89fc7e1166d332a91c96ce7f69380d10b70e";
