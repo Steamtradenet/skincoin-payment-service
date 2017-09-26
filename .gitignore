@@ -5,6 +5,6 @@
 /distrib
 /logs
 /docker-compose.yml
-/package-lock.json
-/node_modules
+/frontend/package-lock.json
+/frontend/node_modules
 /src/main/resources/application.yml
