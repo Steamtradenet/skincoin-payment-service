@@ -152,7 +152,8 @@ Every new application has the following properties:
 * Name - Application name
 * API Key - Secure key to access to the API
 * Payout address - Payout address in Ethereum networt. All payouts will be made from this address. Make sure there is enought money on it
-* Payout password - Password from the payout address. 
+* Payout password - Password from the payout address.
+* Auth secret - A secret token to secure the callback notifications
 * Callback URL - Callback REST interface to accept notification from the service
 * Enable callback - Enable or disable notifications via REST interface.     
      
@@ -163,4 +164,4 @@ To register a new application do the following:
 3. Press "New" button, fill the form.
 4. Press "Save" button. The new application will be appeared in table.  
 
-Now you can try to use API as described here: [API](https://docs.google.com/document/d/1wzjLyXwRgHIvSRGCjc0UOL9yDiY-VIYLozqAkmZO_XE/edit)
+Now you can try to use API as described here: [API](docs/SkinCoin payment service API v1.1.pdf)
