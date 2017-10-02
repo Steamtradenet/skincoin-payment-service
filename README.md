@@ -159,9 +159,9 @@ Every new application has the following properties:
      
 To register a new application do the following:
 
-1. Go to Admin UI http://localhost:\<SERVICE_PORT\>
+1. Go to Admin UI http://localhost:<SERVICE_PORT\>
 2. Enter credentials as was specified in configuration (see \<ADMIN_NAME\> and \<ADMIN_PASSWORD\> ). Press "Login"
 3. Press "New" button, fill the form.
 4. Press "Save" button. The new application will be appeared in table.  
 
-Now you can try to use API as described here: [API](docs/SkinCoin payment service API v1.1.pdf)
+Now you can try to use API as described here: [API](docs/SkinCoin%20payment%20service%20API%20v1.1.pdf)
