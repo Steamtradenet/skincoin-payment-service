@@ -31,7 +31,7 @@ public class EthTransactionDaoImpl implements EthTransactionDao {
 
     @Override
     public EthTransaction getByHash(String hash) {
-        return repository.getOne(hash);
+        return repository.findOne(hash);
     }
 
     @Override
