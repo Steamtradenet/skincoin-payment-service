@@ -137,7 +137,7 @@ public class TransactionProcessor {
             }
         }
 
-        return response.getLogs() != null && response.getLogs().size() > 0;
+        return true;
     }
 
 

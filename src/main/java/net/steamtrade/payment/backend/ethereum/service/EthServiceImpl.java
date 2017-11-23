@@ -104,7 +104,7 @@ public class EthServiceImpl implements EthService {
         // Estimate and check gasLimit
         BigInteger estimatedGasLimit = estimateGasLimit(transaction);
 
-        if (estimatedGasLimit.compareTo(gasLimit) == 1) {
+        if (estimatedGasLimit.compareTo(gasLimit) > 0) {
             throw new AppException(Error.TOO_LOW_GAS_SPECIFIED, "Too much gas("+gasLimit+") required for transaction. Limit " +
                     gasLimit);
         }
@@ -136,7 +136,7 @@ public class EthServiceImpl implements EthService {
         // Estimate and check gasLimit
         BigInteger estimatedGasLimit = estimateGasLimit(transaction);
 
-        if (estimatedGasLimit.compareTo(gasLimit) == 1) {
+        if (estimatedGasLimit.compareTo(gasLimit) > 0) {
             throw new AppException(Error.TOO_LOW_GAS_SPECIFIED, "Too low gas("+gasLimit+") specified for transaction. Required: " + estimatedGasLimit);
         }
 

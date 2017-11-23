@@ -50,7 +50,7 @@ public class SkincoinServiceImpl implements SkincoinService {
 
         if (gasPrice == null) {
             gasPrice = ethService.getGasPrice(); // Calculate current gasPrice in Ethereum
-            if (gasPrice.compareTo(appConfig.getGasPriceLimit()) == 1) {
+            if (gasPrice.compareTo(appConfig.getGasPriceLimit()) > 0) {
                 throw new AppException(Error.GAS_PRICE_OVERLIMIT, "Estimated gas price("+gasPrice+") is too expensive. Limit is " + appConfig.getGasPriceLimit());
             }
         }
@@ -63,7 +63,7 @@ public class SkincoinServiceImpl implements SkincoinService {
         try {
             // Check money in balance
             BigInteger appBalance = ethService.getBalance(app.getFromAddress(), currency);
-            if (appBalance.compareTo(amount) == -1) {
+            if (appBalance.compareTo(amount) < 0) {
                 throw new AppException(Error.INSUFFICIENT_AMOUNT, "Insufficient amount(appId:"+app+",from:"+app.getFromAddress()+",balance:"+appBalance+"). Need " + amount);
             }
 

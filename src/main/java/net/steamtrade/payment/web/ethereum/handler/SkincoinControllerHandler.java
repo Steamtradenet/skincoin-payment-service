@@ -6,6 +6,7 @@ import net.steamtrade.payment.backend.admin.dao.model.App;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthPayment;
 import net.steamtrade.payment.backend.ethereum.service.EthService;
 import net.steamtrade.payment.backend.ethereum.service.SkincoinService;
+import net.steamtrade.payment.backend.ethereum.utils.AddressUtils;
 import net.steamtrade.payment.backend.exceptions.AppException;
 import net.steamtrade.payment.backend.utils.StringUtils;
 import net.steamtrade.payment.json.EthereumInfoJson;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Map;
 
 /**
@@ -30,13 +32,15 @@ public class SkincoinControllerHandler {
     @Autowired
     private AppConfig appConfig;
 
-    public EthPayment createPayout(NewRequestJson newPaymentJson, Map<String, String[]> filter) throws AppException {
+    public EthPayment createPayout(NewRequestJson newPaymentJson, Map<String, String[]> filter) throws AppException, InvalidAlgorithmParameterException {
         App app = SecurityContext.getCurrentApp();
 
         BigInteger gasLimit = StringUtils.getOptionalParamValue("gas_limit", filter, BigInteger.class);
         BigInteger gasPrice = StringUtils.getOptionalParamValue("gas_price", filter, BigInteger.class);
 
-        return skincoinService.createPayout(app.getId(), newPaymentJson.getRequestId(), newPaymentJson.getTo(),
+        String toAddress = AddressUtils.accountToAddress(newPaymentJson.getTo().toLowerCase());
+
+        return skincoinService.createPayout(app.getId(), newPaymentJson.getRequestId(), toAddress,
                 newPaymentJson.getAmount(), Currency.fromName(newPaymentJson.getCurrency()), gasLimit, gasPrice);
     }
 
