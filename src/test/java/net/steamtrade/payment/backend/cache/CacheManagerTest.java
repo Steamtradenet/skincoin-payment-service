@@ -1,6 +1,7 @@
 package net.steamtrade.payment.backend.cache;
 
 import net.steamtrade.payment.Application;
+import net.steamtrade.payment.backend.admin.dao.model.App;
 import net.steamtrade.payment.backend.ethereum.dao.model.EthAccount;
 import net.steamtrade.payment.backend.ethereum.dao.model.pk.EthAccountPK;
 import static org.junit.Assert.*;
@@ -28,6 +29,37 @@ public class CacheManagerTest extends Application {
 
         assertNotNull(fromCache);
         assertEquals(key.toLowerCase(), fromCache.getId().getAccountId());
+    }
+
+
+//    @Test
+    public void addAppTest() {
+
+
+        cacheManager.clearCache(CacheName.APP_CACHE);
+
+        App app = new App();
+        app.setId(2);
+        app.setToken("123");
+        app.setCallbackUrl("http://localhost:8989");
+        app.setEnableCallback(true);
+        app.setDescription("test1");
+        app.setFromAddress("asdasdas");
+        app.setFromPassword("www");
+
+        appDao.save(app);
+
+        App fromCache = cacheManager.getValueFromCache(CacheName.APP_CACHE, "2");
+
+
+        App app1 = appDao.getAppById(2);
+
+
+
+
+
+        assertNotNull(fromCache);
+//        assertEquals(key.toLowerCase(), fromCache.getId().getAccountId());
     }
 
 

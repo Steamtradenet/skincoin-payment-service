@@ -20,13 +20,13 @@ public class CacheManagerImpl implements CacheManager {
     }
 
     @Override
-    public void addValueToCache(String cacheName, String key, Object value) {
+    public void addValueToCache(String cacheName, Object key, Object value) {
         Cache cache = cacheManager.getCache(cacheName);
         cache.put(key, value);
     }
 
     @Override
-    public <T> T  getValueFromCache(String cacheName, String key) {
+    public <T> T  getValueFromCache(String cacheName, Object key) {
         Cache cache = cacheManager.getCache(cacheName);
         Cache.ValueWrapper valueWrapper = cache.get(key);
         return valueWrapper != null ? (T)valueWrapper.get(): null;

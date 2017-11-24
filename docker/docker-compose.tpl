@@ -22,7 +22,7 @@ services:
     volumes:
       - ${MYSQL_DATA_DIR}:/var/lib/mysql
   skincoin-payment-service:
-    image: steamtrade/skincoin-payment-service:v1.1
+    image: steamtrade/skincoin-payment-service:v1.2
     restart: always
     links:
       - geth

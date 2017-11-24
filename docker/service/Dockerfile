@@ -1,4 +1,4 @@
-FROM steamtrade/skincoin-payment-service:v1.1
+FROM steamtrade/skincoin-payment-service:v1.2
 
 VOLUME "/logs"
 

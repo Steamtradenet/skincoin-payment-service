@@ -164,4 +164,4 @@ To register a new application do the following:
 3. Press "New" button, fill the form.
 4. Press "Save" button. The new application will be appeared in table.  
 
-Now you can try to use API as described here: [API](docs/SkinCoin%20payment%20service%20API%20v1.1.pdf)
+Now you can try to use API as described here: [API](docs/SkinCoin%20payment%20service%20API.pdf)

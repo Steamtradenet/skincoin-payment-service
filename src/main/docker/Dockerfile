@@ -1,6 +1,6 @@
 FROM anapsix/alpine-java:8
 
-ADD skincoin-payment-service-1.1.jar app.jar
+ADD skincoin-payment-service-1.2.jar app.jar
 ADD wait_for_it.sh wait_for_it.sh
 
 RUN bash -c 'touch /app.jar' && \

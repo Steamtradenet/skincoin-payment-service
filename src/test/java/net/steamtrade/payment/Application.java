@@ -1,5 +1,6 @@
 package net.steamtrade.payment;
 
+import net.steamtrade.payment.backend.admin.dao.AppDao;
 import net.steamtrade.payment.backend.cache.CacheManager;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,8 @@ public class Application {
 
     @Autowired
     protected CacheManager cacheManager;
+
+    @Autowired
+    protected AppDao appDao;
 
 }
