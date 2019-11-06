@@ -19,8 +19,8 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.protocol.parity.Parity;
 import net.steamtrade.payment.backend.exceptions.Error;
+import org.web3j.protocol.parity.Parity;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -112,7 +112,7 @@ public class EthServiceImpl implements EthService {
         Parity parity = Parity.build(new HttpService(appConfig.getClientUrl()));
         try {
             // Sent ether to new Account
-            EthSendTransaction ethSendTransaction = parity.personalSignAndSendTransaction(transaction, fromPassword).send();
+            EthSendTransaction ethSendTransaction = parity.personalSendTransaction(transaction, fromPassword).send();
             if (ethSendTransaction.hasError()) {
                 throw new AppException(Error.SEND_TRANSACTION_FAILED, ethSendTransaction.getError());
             }
@@ -143,7 +143,7 @@ public class EthServiceImpl implements EthService {
         Parity parity = Parity.build(new HttpService(appConfig.getClientUrl()));
         try {
             // Sent ether to new Account
-            EthSendTransaction ethSendTransaction = parity.personalSignAndSendTransaction(transaction, fromPassword).send();
+            EthSendTransaction ethSendTransaction = parity.personalSendTransaction(transaction, fromPassword).send();
             if (ethSendTransaction.hasError()) {
                 throw new AppException(Error.SEND_TRANSACTION_FAILED, ethSendTransaction.getError());
             }

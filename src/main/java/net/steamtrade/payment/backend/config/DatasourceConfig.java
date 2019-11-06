@@ -1,7 +1,7 @@
 package net.steamtrade.payment.backend.config;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,8 @@ public class DatasourceConfig {
     @Bean(name = STEAMTRADE_DATASOURCE)
     @ConfigurationProperties(prefix="spring.datasource")
     public DataSource steamtradeDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create().driverClassName("root").url("jdbc:mysql://localhost:3306/payment_service?useUnicode=true&useFastDateParsing=false&characterEncoding=UTF-8")
+                .driverClassName("com.mysql.jdbc.Driver").build();
     }
 
     @Bean

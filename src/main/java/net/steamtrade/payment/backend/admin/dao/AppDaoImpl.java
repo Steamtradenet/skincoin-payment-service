@@ -31,7 +31,7 @@ public class AppDaoImpl implements AppDao {
     }
 
     public App getAppById(int id) {
-        return repository.findOne(id);
+        return repository.findById(id).get();
     }
 
     public App getAppByToken(String token) {

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,9 +88,7 @@ public class RestErrorHandler {
 
     private HttpStatus getHttpStatusException(Exception ex) {
         HttpStatus status = null;
-        if(ex instanceof NoSuchRequestHandlingMethodException) {
-            status = HttpStatus.NOT_FOUND;
-        } else if(ex instanceof HttpRequestMethodNotSupportedException) {
+        if(ex instanceof HttpRequestMethodNotSupportedException) {
             status = HttpStatus.METHOD_NOT_ALLOWED;
         } else if(ex instanceof HttpMediaTypeNotSupportedException) {
             status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;

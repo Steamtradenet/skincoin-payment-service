@@ -35,7 +35,7 @@ public class EthPaymentDaoImpl implements EthPaymentDao {
         QEthPayment payment = QEthPayment.ethPayment;
         return repository.findOne(payment.id.appId.eq(appId)
                 .and(payment.id.type.eq(type))
-                .and(payment.id.requestId.eq(requestId)));
+                .and(payment.id.requestId.eq(requestId))).get();
     }
 
     @Override

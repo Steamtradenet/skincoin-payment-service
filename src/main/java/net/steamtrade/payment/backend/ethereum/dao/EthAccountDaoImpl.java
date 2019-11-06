@@ -37,7 +37,7 @@ public class EthAccountDaoImpl implements EthAccountDao {
     public EthAccount getByRequestId(int appId, String requestId) {
         QEthAccount account = QEthAccount.ethAccount;
         return repository.findOne(account.id.appId.eq(appId)
-                .and(account.requestId.eq(requestId)));
+                .and(account.requestId.eq(requestId))).get();
     }
 
     @Override
