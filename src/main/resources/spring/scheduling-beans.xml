@@ -41,17 +41,17 @@
     <!-- Schedulers -->
     <task:scheduled-tasks scheduler="tradeScheduler">
         <task:scheduled ref="watchAccountCreatorService" method="poll"
-                        fixed-delay="${ethereumService.watch.accountCreator.poll.period}" />
+                        fixed-delay="10000" />
         <task:scheduled ref="watchNewTransactionService" method="poll"
-                        fixed-delay="${ethereumService.watch.newTransaction.poll.period}" />
+                        fixed-delay="5000" />
         <task:scheduled ref="watchPendingTransactionService" method="poll"
-                        fixed-delay="${ethereumService.watch.pendingTransaction.poll.period}" />
+                        fixed-delay="5000" />
         <task:scheduled ref="watchNotificationService" method="poll"
-                        fixed-delay="${ethereumService.watch.notification.poll.period}" />
+                        fixed-delay="5000" />
         <task:scheduled ref="newTransactionAnalyser" method="poll"
-                        fixed-delay="${ethereumService.watch.newTransactionAnalyser.poll.period}" />
+                        fixed-delay="5000" />
         <task:scheduled ref="watchInternalPayoutsService" method="poll"
-                        fixed-delay="${ethereumService.watch.internalPayouts.poll.period}" />
+                        fixed-delay="5000" />
     </task:scheduled-tasks>
 
     <task:scheduler id="tradeScheduler" pool-size="50"/>
