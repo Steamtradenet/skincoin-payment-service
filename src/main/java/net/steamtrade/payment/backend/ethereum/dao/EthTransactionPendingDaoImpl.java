@@ -35,6 +35,6 @@ public class EthTransactionPendingDaoImpl implements EthTransactionPendingDao {
 
     @Override
     public void delete(String hash) {
-        repository.delete(hash);
+        repository.deleteById(hash);
     }
 }

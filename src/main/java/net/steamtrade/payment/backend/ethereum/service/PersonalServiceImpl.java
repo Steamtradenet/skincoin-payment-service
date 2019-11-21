@@ -10,10 +10,11 @@ import net.steamtrade.payment.backend.exceptions.AppException;
 import net.steamtrade.payment.backend.utils.PasswordGen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.web3j.protocol.admin.methods.response.NewAccountIdentifier;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.protocol.parity.Parity;
-import org.web3j.protocol.parity.methods.response.NewAccountIdentifier;
+
 import net.steamtrade.payment.backend.exceptions.Error;
+import org.web3j.protocol.parity.Parity;
 
 import java.util.concurrent.locks.Lock;
 

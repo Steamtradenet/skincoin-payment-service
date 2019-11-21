@@ -21,6 +21,6 @@ public class EthFilterDaoImpl implements EthFilterDao {
 
     @Override
     public EthFilter getByName(String name) {
-        return repository.findOne(name);
+        return repository.findById(name).orElse(null);
     }
 }
