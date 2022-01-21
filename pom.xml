@@ -27,7 +27,7 @@
         <web3j.version>4.5.5</web3j.version>
         <web3j.spring-boot.version>1.6.0</web3j.spring-boot.version>
         <querydsl.version>4.1.4</querydsl.version>
-        <hazelcast.version>3.6.2</hazelcast.version>
+        <hazelcast.version>4.0.5</hazelcast.version>
         <flywaydb.version>6.0.8</flywaydb.version>
         <jwt.version>0.7.0</jwt.version>
 
